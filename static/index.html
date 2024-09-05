@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ransomware Dashboard</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+
+    <!-- Mahaveer :  For Datatables printing and exporting -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.1.2/css/buttons.dataTables.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.5/css/dataTables.dataTables.css" />
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.1.2/js/dataTables.buttons.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.1.2/js/buttons.print.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        table {
+            margin: 20px auto;
+            width: 90%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>CRUD Operations</h1>
+    <button onclick="window.location.href='static/crud/add_ransomware.html'">Add Ransomware</button>
+    <button onclick="window.location.href='static/crud/delete_ransomware.html'">Delete Ransomware</button>
+    <button onclick="window.location.href='static/crud/get_ransomware.html'">Get Ransomware</button>
+    <button onclick="window.location.href='static/crud/update_ransomware.html'">Update Ransomware</button>
+
+    <script>
+        function loadData() {
+            // Mahaveer - https://blog.logrocket.com/how-to-make-http-requests-like-a-pro-with-axios/
+            axios.get('http://localhost:5000/ransomware')
+                .then(response => {
+                    const tableBody = document.querySelector("#ransomwareTable tbody");
+                    tableBody.innerHTML = ""; // Clear previous data
+
+                    response.data.forEach(record => {
+                        const row = `
+                            <tr>
+                                <td>${record.name}</td>
+                                <td>${record.extensions}</td>
+                                <td>${record.ransomNoteFilenames}</td>
+                                <td>${record.encryptionAlgorithm}</td>
+                                <td>${record.microsoftDetectionName}</td>
+                                <td>${record.resources || ''}</td>
+                            </tr>
+                        `;
+                        tableBody.insertAdjacentHTML('beforeend', row);
+                    });
+                    // Destroy existing DataTable if it exists
+                    if ($.fn.DataTable.isDataTable('#ransomwareTable')) {
+                        $('#ransomwareTable').DataTable().destroy();
+                    }
+
+                    // Initialize DataTable after data is loaded
+                    $('#ransomwareTable').DataTable({
+                        dom: 'lBfrtip',  
+                        buttons: [
+                            //'copy', 'csv', 'excel', 'pdf', 'print' // Can add more options if needed
+                            'csv', 'excel'
+                        ]
+                    });
+                })
+                .catch(error => console.error('Error loading data:', error));
+        }
+
+        function downloadData() {
+            const responseDiv = document.getElementById('displayStatus');
+
+            // Mahaveer - https://blog.logrocket.com/how-to-make-http-requests-like-a-pro-with-axios/
+            axios.post('http://localhost:5000/load_json')
+                .then(response => {
+                    if (response.status === 201) {
+                        responseDiv.innerHTML = ""; // Clear previous message
+                        responseDiv.innerHTML = "Data downloaded and synched successfully. Displaying the updated data below.";
+                        console.log('Data downloaded and synched successfully');
+                        loadData();
+                    } else {
+                        responseDiv.innerHTML = `Unexpected response code: ${response.status}`;
+                    }
+                })
+                .catch(error => console.error('Error downloading data, check REST API and Internet connectivity:', error));
+        }
+    </script>
+
+    <h1>Ransomware Dashboard</h1>
+    <button onclick="loadData()">Show Ransomware Data</button>
+    <button onclick="downloadData()">Sync data with Github Ransomware Database</button>
+    <div id="displayStatus"></div>
+
+    <table id="ransomwareTable">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Extensions</th>
+                <th>Ransom Note Filenames</th>
+                <th>Encryption Algorithm</th>
+                <th>Microsoft Detection Name</th>
+                <th>Resources</th>
+                <!-- Maha - To Do -  Add more columns as needed -->
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</body>
+
+</html>

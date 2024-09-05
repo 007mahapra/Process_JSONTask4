@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Ransomware Record</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <button onclick="window.location.href='/'">Home</button>
+    <h1>Delete Ransomware Record</h1>
+    <form id="deleteForm">
+        <label for="recordId">Ransomeware Name</label>
+        <input type="text" id="recordId" name="recordId" required><br>
+        <button type="submit">Delete Record</button>
+    </form>
+    <div id="response"></div>
+
+    <script>
+        document.getElementById('deleteForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const rName = document.getElementById('recordId').value.trim();
+
+            fetch(`http://localhost:5000/ransomware/${rName}`, {
+                method: 'DELETE',
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('response').innerText = JSON.stringify(data);
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Ransomware Record</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <button onclick="window.location.href='/'">Home</button>
+    <h1>Update Ransomware Record</h1>
+    <form id="updateForm">
+        <label for="recordId">Ransowmware Name (required):</label>
+        <input type="text" id="recordId" name="recordId" required><br>
+
+        <label for="jsonInput">Update JSON (optional):</label>
+        <textarea id="jsonInput" name="jsonInput"></textarea><br>
+
+        <button type="submit">Update Record</button>
+    </form>
+    <div id="response"></div>
+
+    <script>
+        document.getElementById('updateForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const recordId = document.getElementById('recordId').value.trim();
+            const jsonInput = document.getElementById('jsonInput').value.trim();
+
+            const payload = {};
+
+            if (jsonInput) {
+                try {
+                    const jsonData = JSON.parse(jsonInput);
+                    Object.assign(payload, jsonData);
+                } catch (error) {
+                    alert("Invalid JSON format");
+                    return;
+                }
+            }
+
+            fetch(`http://localhost:5000/ransomware/${recordId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('response').innerText = JSON.stringify(data);
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>

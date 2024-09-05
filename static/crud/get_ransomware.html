@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Get Ransomware Records</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <button onclick="window.location.href='/'">Home</button>
+    <h1>Ransomware Records</h1>
+    <label for="name">Ransomware Name (required):</label>
+    <input type="text" id="recordId" name="name" required><br>
+    <button onclick="loadData()">Fetch Records</button>
+    <div id="response"></div>
+    <table id="ransomwareTable" style="display: none;">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Extensions</th>
+                <th>Ransom Note Filenames</th>
+                <th>Encryption Algorithm</th>
+                <th>Microsoft Detection Name</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script>
+        function loadData() {
+            const rName = document.getElementById('recordId').value.trim();
+
+            fetch(`http://localhost:5000/ransomware/${rName}`, {
+                method: 'GET',
+            })
+            .then(response => response.json().then(data => ({ status: response.status, body: data })))
+            .then(res => {
+                const table = document.getElementById('ransomwareTable');
+                const responseDiv = document.getElementById('response');
+                const tableBody = document.querySelector("#ransomwareTable tbody");
+
+                if (res.status === 200) {
+                    tableBody.innerHTML = "";
+                    const row = `
+                        <tr>
+                            <td>${res.body.name}</td>
+                            <td>${res.body.extensions || ''}</td>
+                            <td>${res.body.ransomNoteFilenames || ''}</td>
+                            <td>${res.body.encryptionAlgorithm || ''}</td>
+                            <td>${res.body.microsoftDetectionName || ''}</td>
+                        </tr>
+                    `;
+                    tableBody.insertAdjacentHTML('beforeend', row);
+                    table.style.display = 'table';
+                    responseDiv.innerHTML = ''; 
+                } else {
+                    table.style.display = 'none'; 
+                    responseDiv.innerHTML = `Status: ${res.status}, Message: ${res.body.message || 'An error occurred'}`;
+                }
+            })
+            .catch(error => {
+                document.getElementById('response').innerHTML = `Error: ${error}`;
+                document.getElementById('ransomwareTable').style.display = 'none'; 
+            });
+        }
+    </script>
+</body>
+</html>
