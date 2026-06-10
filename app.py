@@ -23,6 +23,8 @@ mongo_uri = (
 if not mongo_uri:
     raise ValueError("MongoDB connection string is not set in environment variables.")
 else:
+    if mongo_uri and "authSource" not in mongo_uri:
+       mongo_uri += ("&" if "?" in mongo_uri else "?") + "authSource=admin"
     print(f"Using MongoDB URI: {mongo_uri}")
 client = MongoClient(mongo_uri)
 db = client.ransomware_db
