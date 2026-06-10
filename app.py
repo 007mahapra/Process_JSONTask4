@@ -13,7 +13,13 @@ CORS(app)
 
 # Connect to MongoDB database
 # Use Railway-provided MongoDB URI if available, otherwise fall back to local mongo service
-mongo_uri = os.environ.get("MONGO_URL") or os.environ.get("LOCAL_DATABASE_URL")
+mongo_uri = (
+    os.environ.get("MONGO_URL") or
+    os.environ.get("MONGO_PRIVATE_URL") or   # Railway internal network
+    os.environ.get("MONGO_PUBLIC_URL") or    # Railway public URL
+    os.environ.get("DATABASE_URL") or
+    os.environ.get("LOCAL_DATABASE_URL")
+)
 if not mongo_uri:
     raise ValueError("MongoDB connection string is not set in environment variables.")
 else:
