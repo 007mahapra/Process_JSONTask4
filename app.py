@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify , send_from_directory
 from pymongo import MongoClient
+import os
 import requests
 import re
 # Maha : TO allow CORS sharing otherwise index.html can not access the endpoints
@@ -11,7 +12,13 @@ app = Flask(__name__)
 CORS(app)
 
 # Connect to MongoDB database
-client = MongoClient("mongodb://mongo:27017/")
+# Use Railway-provided MongoDB URI if available, otherwise fall back to local mongo service
+mongo_uri = os.environ.get("MONGO_URL") or os.environ.get("LOCAL_DATABASE_URL")
+if not mongo_uri:
+    raise ValueError("MongoDB connection string is not set in environment variables.")
+else:
+    print(f"Using MongoDB URI: {mongo_uri}")
+client = MongoClient(mongo_uri)
 db = client.ransomware_db
 collection = db.ransomware_collection
 
