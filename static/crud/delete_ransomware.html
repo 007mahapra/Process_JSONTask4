@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Delete Ransomware Record</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="../config.js"></script>
 </head>
 <body>
     <button onclick="window.location.href='/'">Home</button>
@@ -22,7 +21,7 @@
 
             const rName = document.getElementById('recordId').value.trim();
 
-            fetch(API_CONFIG.getUrl(`${API_CONFIG.ENDPOINTS.RANSOMWARE}/${rName}`), {
+            fetch(`http://localhost:5000/ransomware/${rName}`, {
                 method: 'DELETE',
             })
             .then(response => response.json())

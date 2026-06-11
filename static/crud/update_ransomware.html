@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Update Ransomware Record</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="../config.js"></script>
 </head>
 <body>
     <button onclick="window.location.href='/'">Home</button>
@@ -39,7 +38,7 @@
                 }
             }
 
-            fetch(API_CONFIG.getUrl(`${API_CONFIG.ENDPOINTS.RANSOMWARE}/${recordId}`), {
+            fetch(`http://localhost:5000/ransomware/${recordId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)

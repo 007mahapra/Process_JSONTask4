@@ -8,7 +8,6 @@
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.1.5/js/dataTables.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
-    <script src="config.js"></script>
 
     <!-- Mahaveer :  For Datatables printing and exporting -->
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.1.2/css/buttons.dataTables.css" />
@@ -65,7 +64,7 @@
     <script>
         function loadData() {
             // Mahaveer - https://blog.logrocket.com/how-to-make-http-requests-like-a-pro-with-axios/
-            axios.get(API_CONFIG.getUrl(API_CONFIG.ENDPOINTS.RANSOMWARE))
+            axios.get('http://localhost:5000/ransomware')
                 .then(response => {
                     const tableBody = document.querySelector("#ransomwareTable tbody");
                     tableBody.innerHTML = ""; // Clear previous data
@@ -104,7 +103,7 @@
             const responseDiv = document.getElementById('displayStatus');
 
             // Mahaveer - https://blog.logrocket.com/how-to-make-http-requests-like-a-pro-with-axios/
-            axios.post(API_CONFIG.getUrl(API_CONFIG.ENDPOINTS.LOAD_JSON))
+            axios.post('http://localhost:5000/load_json')
                 .then(response => {
                     if (response.status === 201) {
                         responseDiv.innerHTML = ""; // Clear previous message
