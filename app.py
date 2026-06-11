@@ -8,8 +8,16 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 
+# Replace with your actual Railway frontend URL
+allowed_origins = [
+    f"https://{os.environ.get('APP_HOST')}", # Private Railway frontend URL from environment variable
+    f"http://{os.environ.get('APP_HOST_PUBLIC')}", # Public Railway frontend URL from environment variable
+    "http://localhost:5000", # Keep for local development
+    "http://127.0.0.1:5000" # Keep for local development]
+]
+
 # Initialize CORS
-CORS(app)
+CORS(app, resources={r"/*": {"origins": allowed_origins}})
 
 # Connect to MongoDB database
 # Use Railway-provided MongoDB URI if available, otherwise fall back to local mongo service
