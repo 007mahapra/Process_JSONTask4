@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Get Ransomware Records</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="../config.js"></script>
 </head>
 <body>
     <button onclick="window.location.href='/'">Home</button>
@@ -29,7 +30,7 @@
         function loadData() {
             const rName = document.getElementById('recordId').value.trim();
 
-            fetch(`http://localhost:5000/ransomware/${rName}`, {
+            fetch(API_CONFIG.getUrl(`${API_CONFIG.ENDPOINTS.RANSOMWARE}/${rName}`), {
                 method: 'GET',
             })
             .then(response => response.json().then(data => ({ status: response.status, body: data })))
