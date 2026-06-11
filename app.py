@@ -6,18 +6,31 @@ import re
 # Maha : TO allow CORS sharing otherwise index.html can not access the endpoints
 from flask_cors import CORS
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static', static_url_path='/static')
 
-# Replace with your actual Railway frontend URL
-allowed_origins = [
-    f"https://{os.environ.get('APP_HOST')}", # Private Railway frontend URL from environment variable
-    f"http://{os.environ.get('APP_HOST_PUBLIC')}", # Public Railway frontend URL from environment variable
-    "http://localhost:5000", # Keep for local development
-    "http://127.0.0.1:5000" # Keep for local development]
-]
+# Serve frontend HTML from the Flask app so API calls are same-origin.
+# Use permissive CORS here because the frontend is served from the same app; tighten in production if needed.
+CORS(app)
 
-# Initialize CORS
-CORS(app, resources={r"/*": {"origins": allowed_origins}})
+# Friendly routes for CRUD pages (serve files from static/crud)
+@app.route('/add')
+def add_page():
+    return send_from_directory('static/crud', 'add_ransomware.html')
+
+
+@app.route('/delete')
+def delete_page():
+    return send_from_directory('static/crud', 'delete_ransomware.html')
+
+
+@app.route('/get')
+def get_page():
+    return send_from_directory('static/crud', 'get_ransomware.html')
+
+
+@app.route('/update')
+def update_page():
+    return send_from_directory('static/crud', 'update_ransomware.html')
 
 # Connect to MongoDB database
 # Use Railway-provided MongoDB URI if available, otherwise fall back to local mongo service

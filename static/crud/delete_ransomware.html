@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Delete Ransomware Record</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/static/crud/styles.css">
 </head>
 <body>
     <button onclick="window.location.href='/'">Home</button>
@@ -21,7 +21,7 @@
 
             const rName = document.getElementById('recordId').value.trim();
 
-            fetch(`https://processjsontask4.railway.internal/ransomware/${rName}`, {
+            fetch(`/ransomware/${rName}`, {
                 method: 'DELETE',
             })
             .then(response => response.json())

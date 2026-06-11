@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Get Ransomware Records</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/static/crud/styles.css">
 </head>
 <body>
     <button onclick="window.location.href='/'">Home</button>
@@ -29,7 +29,7 @@
         function loadData() {
             const rName = document.getElementById('recordId').value.trim();
 
-            fetch(`https://processjsontask4.railway.internal/ransomware/${rName}`, {
+            fetch(`/ransomware/${rName}`, {
                 method: 'GET',
             })
             .then(response => response.json().then(data => ({ status: response.status, body: data })))

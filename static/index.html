@@ -56,15 +56,15 @@
 
 <body>
     <h1>CRUD Operations</h1>
-    <button onclick="window.location.href='static/crud/add_ransomware.html'">Add Ransomware</button>
-    <button onclick="window.location.href='static/crud/delete_ransomware.html'">Delete Ransomware</button>
-    <button onclick="window.location.href='static/crud/get_ransomware.html'">Get Ransomware</button>
-    <button onclick="window.location.href='static/crud/update_ransomware.html'">Update Ransomware</button>
+    <button onclick="window.location.href='/add'">Add Ransomware</button>
+    <button onclick="window.location.href='/delete'">Delete Ransomware</button>
+    <button onclick="window.location.href='/get'">Get Ransomware</button>
+    <button onclick="window.location.href='/update'">Update Ransomware</button>
 
     <script>
         function loadData() {
             // Mahaveer - https://blog.logrocket.com/how-to-make-http-requests-like-a-pro-with-axios/
-            axios.get('https://processjsontask4.railway.internal/ransomware')
+            axios.get('/ransomware')
                 .then(response => {
                     const tableBody = document.querySelector("#ransomwareTable tbody");
                     tableBody.innerHTML = ""; // Clear previous data
@@ -103,7 +103,7 @@
             const responseDiv = document.getElementById('displayStatus');
 
             // Mahaveer - https://blog.logrocket.com/how-to-make-http-requests-like-a-pro-with-axios/
-            axios.post('https://processjsontask4.railway.internal/load_json')
+            axios.post('/load_json')
                 .then(response => {
                     if (response.status === 201) {
                         responseDiv.innerHTML = ""; // Clear previous message

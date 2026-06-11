@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Add Ransomware Record</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/static/crud/styles.css">
 </head>
 <body>
     <button onclick="window.location.href='/'">Home</button>
@@ -38,7 +38,7 @@
                 }
             }
 
-            fetch('https://processjsontask4.railway.internal/ransomware', {
+            fetch('/ransomware', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
