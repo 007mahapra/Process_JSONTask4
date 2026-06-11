@@ -29,7 +29,7 @@
         function loadData() {
             const rName = document.getElementById('recordId').value.trim();
 
-            fetch(`http://processjsontask4.railway.internal:5000/ransomware/${rName}`, {
+            fetch(`https://processjsontask4.railway.internal/ransomware/${rName}`, {
                 method: 'GET',
             })
             .then(response => response.json().then(data => ({ status: response.status, body: data })))
