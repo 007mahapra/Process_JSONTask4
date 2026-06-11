@@ -38,7 +38,7 @@
                 }
             }
 
-            fetch(`/ransomware/${recordId}`, {
+            fetch(`http://processjsontask4:5000/ransomware/${recordId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)

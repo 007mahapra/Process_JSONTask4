@@ -21,7 +21,7 @@
 
             const rName = document.getElementById('recordId').value.trim();
 
-            fetch(`/ransomware/${rName}`, {
+            fetch(`http://processjsontask4:5000/ransomware/${rName}`, {
                 method: 'DELETE',
             })
             .then(response => response.json())

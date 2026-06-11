@@ -64,7 +64,7 @@
     <script>
         function loadData() {
             // Mahaveer - https://blog.logrocket.com/how-to-make-http-requests-like-a-pro-with-axios/
-            axios.get('/ransomware')
+            axios.get('http://processjsontask4:5000/ransomware')
                 .then(response => {
                     const tableBody = document.querySelector("#ransomwareTable tbody");
                     tableBody.innerHTML = ""; // Clear previous data
@@ -103,7 +103,7 @@
             const responseDiv = document.getElementById('displayStatus');
 
             // Mahaveer - https://blog.logrocket.com/how-to-make-http-requests-like-a-pro-with-axios/
-            axios.post('/load_json')
+            axios.post('http://processjsontask4:5000/load_json')
                 .then(response => {
                     if (response.status === 201) {
                         responseDiv.innerHTML = ""; // Clear previous message
