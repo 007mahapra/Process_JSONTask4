@@ -38,7 +38,7 @@
                 }
             }
 
-            fetch(`http://localhost:5000/ransomware/${recordId}`, {
+            fetch(`http://127.0.0.1:5000/ransomware/${recordId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)

@@ -21,7 +21,7 @@
 
             const rName = document.getElementById('recordId').value.trim();
 
-            fetch(`http://localhost:5000/ransomware/${rName}`, {
+            fetch(`http://127.0.0.1:5000/ransomware/${rName}`, {
                 method: 'DELETE',
             })
             .then(response => response.json())
